@@ -1,0 +1,12 @@
+{
+  "name": "nailedit-ai-backend",
+  "version": "1.0.0",
+  "description": "Serverless functions for NailedIt.ai",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "stripe": "^15.12.0"
+  }
+}

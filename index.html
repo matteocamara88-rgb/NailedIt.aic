@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NailedIt.ai - AI YouTube Thumbnail Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #dc2626;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .thumbs-up {
+            width: 60px;
+            height: 60px;
+            background-color: #dc2626;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        .thumbs-up::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 32px;
+            background-color: white;
+            border-radius: 12px 12px 8px 8px;
+        }
+        .thumbs-up::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 20px;
+            background-color: white;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <div class="w-full max-w-4xl mx-auto p-6 md:p-8">
+        <!-- Header with Branding -->
+        <div class="text-center mb-8">
+            <div class="flex justify-center items-center mb-4">
+                <div class="thumbs-up"></div>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">NailedIt.ai</h1>
+            <p class="text-xl text-gray-600 mb-4">AI YouTube Thumbnail Generator</p>
+            <p class="text-gray-500 max-w-2xl mx-auto">Create eye-catching YouTube thumbnails in seconds with the power of AI. Just describe your video and watch the magic happen!</p>
+        </div>
+
+        <!-- Main Content Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 space-y-8">
+            <!-- Input Section -->
+            <div class="space-y-6">
+                <!-- Video Description -->
+                <div>
+                    <label for="prompt-input" class="block text-lg font-semibold text-gray-700 mb-3">What's your video about?</label>
+                    <input 
+                        type="text" 
+                        id="prompt-input" 
+                        class="w-full bg-gray-50 border-2 border-gray-200 text-gray-800 rounded-xl px-6 py-4 text-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-all duration-200" 
+                        placeholder="e.g., Unboxing the new SuperPhone 12, My Trip to the Grand Canyon, 5 Tips for Better Sleep"
+                    >
+                </div>
+
+                <!-- Text Overlay -->
+                <div>
+                    <label for="text-overlay" class="block text-lg font-semibold text-gray-700 mb-3">Text to add on thumbnail (optional)</label>
+                    <input 
+                        type="text" 
+                        id="text-overlay" 
+                        class="w-full bg-gray-50 border-2 border-gray-200 text-gray-800 rounded-xl px-6 py-4 text-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none transition-all duration-200" 
+                        placeholder="e.g., NEW!, EPIC!, MUST WATCH!, 2024"
+                    >
+                </div>
+
+                <!-- Multiple Image Upload Section -->
+                <div>
+                    <label class="block text-lg font-semibold text-gray-700 mb-3">Upload images to include (optional)</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-red-400 transition-colors duration-200">
+                        <input 
+                            type="file" 
+                            id="image-upload" 
+                            accept="image/*" 
+                            multiple
+                            class="hidden"
+                        >
+                        <div id="upload-area" class="cursor-pointer">
+                            <div class="text-gray-400 mb-2">
+                                <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                            </div>
+                            <p class="text-gray-600 font-medium">Click to upload images</p>
+                            <p class="text-gray-400 text-sm mt-1">PNG, JPG, GIF up to 10MB each (max 5 images)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Uploaded Images Container -->
+                    <div id="uploaded-images-container" class="mt-4 space-y-4 hidden">
+                        <h4 class="text-md font-semibold text-gray-700">Uploaded Images:</h4>
+                        <div id="images-list" class="space-y-3">
+                            <!-- Images will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <button 
+                    id="generate-btn" 
+                    class="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 ease-in-out text-lg"
+                >
+                    <span id="btn-text">Generate Thumbnail</span>
+                    <div id="btn-loader" class="hidden">
+                        <div class="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Generating...
+                    </div>
+                </button>
+            </div>
+
+            <!-- Result Section -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-semibold text-gray-700">Your Generated Thumbnail</h3>
+                <div id="result-container" class="w-full aspect-video bg-gray-100 rounded-xl flex items-center justify-center border-2 border-dashed border-gray-300 relative overflow-hidden">
+                    <!-- Loader -->
+                    <div id="loader" class="loader hidden"></div>
+                    
+                    <!-- Error Message -->
+                    <div id="error-message" class="hidden p-6 text-center">
+                        <div class="text-red-500 text-lg font-medium mb-2">Oops! Something went wrong</div>
+                        <p class="text-gray-600"></p>
+                    </div>
+                    
+                    <!-- Placeholder -->
+                    <div id="placeholder" class="text-center p-8">
+                        <div class="text-gray-400 mb-4">
+                            <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-gray-500 text-lg">Your AI-generated thumbnail will appear here</p>
+                        <p class="text-gray-400 text-sm mt-2">Enter a video idea above and click generate</p>
+                    </div>
+                    
+                    <!-- Generated Image -->
+                    <img id="thumbnail-image" class="hidden w-full h-full object-cover rounded-xl" alt="AI Generated Thumbnail">
+                </div>
+
+                <!-- Download Button (shown after generation) -->
+                <div id="download-section" class="hidden text-center">
+                    <button id="download-btn" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transform hover:scale-105 transition-all duration-200">
+                        Download Thumbnail
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="mt-12 grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div class="text-red-500 text-3xl mb-3">⚡</div>
+                <h3 class="font-semibold text-gray-800 mb-2">Lightning Fast</h3>
+                <p class="text-gray-600 text-sm">Generate professional thumbnails in seconds, not hours</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div class="text-red-500 text-3xl mb-3">🎨</div>
+                <h3 class="font-semibold text-gray-800 mb-2">AI-Powered</h3>
+                <p class="text-gray-600 text-sm">Advanced AI creates eye-catching designs automatically</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+                <div class="text-red-500 text-3xl mb-3">📱</div>
+                <h3 class="font-semibold text-gray-800 mb-2">YouTube Ready</h3>
+                <p class="text-gray-600 text-sm">Perfect 1280x720 resolution optimized for YouTube</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const generateBtn = document.getElementById('generate-btn');
+        const promptInput = document.getElementById('prompt-input');
+        const textOverlayInput = document.getElementById('text-overlay');
+        const imageUpload = document.getElementById('image-upload');
+        const uploadArea = document.getElementById('upload-area');
+        const uploadedImagesContainer = document.getElementById('uploaded-images-container');
+        const imagesList = document.getElementById('images-list');
+        const thumbnailImage = document.getElementById('thumbnail-image');
+        const loader = document.getElementById('loader');
+        const errorMessage = document.getElementById('error-message');
+        const placeholder = document.getElementById('placeholder');
+        const downloadSection = document.getElementById('download-section');
+        const downloadBtn = document.getElementById('download-btn');
+        const btnText = document.getElementById('btn-text');
+        const btnLoader = document.getElementById('btn-loader');
+
+        let uploadedImages = [];
+        let userCredits = 0;
+        let userPlan = 'free';
+        let userId = null;
+        let lastGenerationTime = 0;
+        let generationCount = 0;
+        const RATE_LIMIT_WINDOW = 60000; // 1 minute
+        const MAX_GENERATIONS_PER_MINUTE = 10;
+
+        // Check for payment success on page load
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const payment = urlParams.get('payment');
+            const plan = urlParams.get('plan');
+            const order = urlParams.get('order');
+            
+            if (payment === 'success' && plan && order) {
+                handlePaymentSuccess(plan, order);
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            
+            // Load saved credits from localStorage
+            loadUserCredits();
+            
+            // Security: Validate localStorage data
+            validateStoredData();
+        });
+
+        function handlePaymentSuccess(plan, orderId) {
+            // Add credits based on plan
+            const creditMap = {
+                'basic': 50,
+                'pro': 200,
+                'unlimited': 999999 // Unlimited
+            };
+            
+            userCredits += creditMap[plan] || 0;
+            userPlan = plan;
+            
+            // Save to localStorage
+            localStorage.setItem('nailedit_credits', userCredits);
+            localStorage.setItem('nailedit_plan', userPlan);
+            localStorage.setItem('nailedit_order', orderId);
+            
+            // Show success message
+            showSuccessMessage(`Payment successful! You now have ${userCredits} credits.`);
+            updateCreditDisplay();
+        }
+
+        function generateUserId() {
+            // Generate a unique user ID based on browser fingerprint
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillText('NailedIt.ai User ID', 2, 2);
+            
+            const fingerprint = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width + 'x' + screen.height,
+                new Date().getTimezoneOffset(),
+                canvas.toDataURL()
+            ].join('|');
+            
+            // Create a simple hash
+            let hash = 0;
+            for (let i = 0; i < fingerprint.length; i++) {
+                const char = fingerprint.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            
+            return 'user_' + Math.abs(hash).toString(36);
+        }
+
+        function loadUserCredits() {
+            // Generate or retrieve user ID
+            userId = localStorage.getItem('nailedit_user_id');
+            if (!userId) {
+                userId = generateUserId();
+                localStorage.setItem('nailedit_user_id', userId);
+            }
+            
+            const savedCredits = localStorage.getItem('nailedit_credits');
+            const savedPlan = localStorage.getItem('nailedit_plan');
+            
+            if (savedCredits) {
+                userCredits = parseInt(savedCredits);
+                userPlan = savedPlan || 'free';
+            }
+            
+            // Always show credit display, even for new users
+            updateCreditDisplay();
+        }
+
+        // Security: Validate stored data to prevent manipulation
+        function validateStoredData() {
+            const savedCredits = localStorage.getItem('nailedit_credits');
+            const savedPlan = localStorage.getItem('nailedit_plan');
+            
+            // Validate credits are within reasonable bounds
+            if (savedCredits) {
+                const credits = parseInt(savedCredits);
+                if (isNaN(credits) || credits < 0 || credits > 10000) {
+                    console.warn('Invalid credits detected, resetting to 0');
+                    localStorage.setItem('nailedit_credits', '0');
+                    userCredits = 0;
+                }
+            }
+            
+            // Validate plan is legitimate
+            if (savedPlan) {
+                const validPlans = ['free', 'basic', 'pro', 'unlimited'];
+                if (!validPlans.includes(savedPlan)) {
+                    console.warn('Invalid plan detected, resetting to free');
+                    localStorage.setItem('nailedit_plan', 'free');
+                    userPlan = 'free';
+                }
+            }
+        }
+
+        function updateCreditDisplay() {
+            // Create or update credit display
+            let creditDisplay = document.getElementById('credit-display');
+            if (!creditDisplay) {
+                creditDisplay = document.createElement('div');
+                creditDisplay.id = 'credit-display';
+                creditDisplay.className = 'bg-gray-800 text-white p-4 rounded-lg mb-6';
+                document.querySelector('.space-y-6').insertBefore(creditDisplay, document.querySelector('.space-y-6').firstChild);
+            }
+            
+            if (userCredits > 0) {
+                creditDisplay.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white">Your Credits</h3>
+                            <p class="text-gray-300">${userCredits} credits remaining</p>
+                            <p class="text-xs text-gray-500">User ID: ${userId}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm text-gray-400">Plan: ${userPlan.toUpperCase()}</p>
+                            <a href="sales.html" class="text-red-400 hover:text-red-300 text-sm">Buy More</a>
+                        </div>
+                    </div>
+                `;
+            } else {
+                creditDisplay.innerHTML = `
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold text-white mb-2">No Credits Remaining</h3>
+                        <p class="text-gray-300 mb-4">Purchase credits to start generating thumbnails</p>
+                        <p class="text-xs text-gray-500 mb-4">User ID: ${userId}</p>
+                        <a href="sales.html" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-lg transition-colors">
+                            Buy Credits Now
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        function showSuccessMessage(message) {
+            // Create success notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50';
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <span class="mr-2">✅</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        generateBtn.addEventListener('click', generateThumbnail);
+
+        // Allow pressing Enter to generate
+        promptInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                generateThumbnail();
+            }
+        });
+
+        // Image upload functionality
+        uploadArea.addEventListener('click', () => imageUpload.click());
+        
+        imageUpload.addEventListener('change', handleImageUpload);
+
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('border-red-400', 'bg-red-50');
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('border-red-400', 'bg-red-50');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('border-red-400', 'bg-red-50');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                imageUpload.files = files;
+                handleImageUpload();
+            }
+        });
+
+        // Multiple image upload handling functions
+        function handleImageUpload() {
+            const files = Array.from(imageUpload.files);
+            
+            if (files.length === 0) return;
+
+            // Check if adding these files would exceed the limit
+            if (uploadedImages.length + files.length > 5) {
+                showError("Maximum 5 images allowed. Please remove some images first.");
+                return;
+            }
+
+            files.forEach(file => {
+                // Check file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    showError(`File "${file.name}" is too large. Maximum size is 10MB.`);
+                    return;
+                }
+
+                // Check file type
+                if (!file.type.startsWith('image/')) {
+                    showError(`File "${file.name}" is not an image.`);
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageData = {
+                        id: Date.now() + Math.random(),
+                        data: e.target.result,
+                        name: file.name,
+                        context: ''
+                    };
+                    
+                    uploadedImages.push(imageData);
+                    displayUploadedImages();
+                };
+                reader.readAsDataURL(file);
+            });
+
+            // Clear the input so the same files can be selected again
+            imageUpload.value = '';
+        }
+
+        function displayUploadedImages() {
+            if (uploadedImages.length === 0) {
+                uploadedImagesContainer.classList.add('hidden');
+                return;
+            }
+
+            uploadedImagesContainer.classList.remove('hidden');
+            imagesList.innerHTML = '';
+
+            uploadedImages.forEach((image, index) => {
+                const imageElement = document.createElement('div');
+                imageElement.className = 'bg-gray-50 rounded-lg p-4 border border-gray-200';
+                imageElement.innerHTML = `
+                    <div class="flex gap-4 items-start">
+                        <div class="flex-shrink-0">
+                            <img src="${image.data}" alt="${image.name}" class="w-20 h-20 object-cover rounded-lg shadow-sm">
+                        </div>
+                        <div class="flex-1 space-y-3">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-700">${image.name}</p>
+                                    <p class="text-xs text-gray-500">Image ${index + 1}</p>
+                                </div>
+                                <button onclick="removeImage(${image.id})" class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                    Remove
+                                </button>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-1">Context for this image:</label>
+                                <input 
+                                    type="text" 
+                                    onchange="updateImageContext(${image.id}, this.value)"
+                                    placeholder="e.g., This is the main product, Background scene, Close-up detail"
+                                    class="w-full text-sm bg-white border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-red-500 focus:border-red-500 focus:outline-none"
+                                    value="${image.context}"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                `;
+                imagesList.appendChild(imageElement);
+            });
+        }
+
+        function removeImage(imageId) {
+            uploadedImages = uploadedImages.filter(img => img.id !== imageId);
+            displayUploadedImages();
+        }
+
+        function updateImageContext(imageId, context) {
+            const image = uploadedImages.find(img => img.id === imageId);
+            if (image) {
+                image.context = context;
+            }
+        }
+
+        // Make functions globally available for onclick handlers
+        window.removeImage = removeImage;
+        window.updateImageContext = updateImageContext;
+
+        async function generateThumbnail() {
+            const userInput = promptInput.value.trim();
+            const textOverlay = textOverlayInput.value.trim();
+            
+            if (!userInput) {
+                showError("Please enter a video title or idea.");
+                return;
+            }
+
+            // Security: Rate limiting
+            const now = Date.now();
+            if (now - lastGenerationTime < RATE_LIMIT_WINDOW) {
+                if (generationCount >= MAX_GENERATIONS_PER_MINUTE) {
+                    showError("Rate limit exceeded. Please wait a moment before generating another thumbnail.");
+                    return;
+                }
+            } else {
+                generationCount = 0;
+            }
+
+            // Check if user has credits
+            if (userCredits <= 0) {
+                showError("No credits remaining. Please purchase credits to generate thumbnails.");
+                return;
+            }
+
+            // Security: Input validation
+            if (userInput.length > 500) {
+                showError("Video description is too long. Please keep it under 500 characters.");
+                return;
+            }
+
+            if (textOverlay.length > 100) {
+                showError("Text overlay is too long. Please keep it under 100 characters.");
+                return;
+            }
+
+            // Show loading state
+            showLoading(true);
+
+            // Construct a detailed prompt for better results
+            let detailedPrompt = `Create a vibrant, eye-catching YouTube thumbnail for a video titled "${userInput}". The thumbnail should be high resolution (1280x720), with bold colors, clear focus on the main subject, and professional composition. Make it engaging and click-worthy.`;
+            
+            // Add text overlay instruction if provided
+            if (textOverlay) {
+                detailedPrompt += ` Include the text "${textOverlay}" prominently displayed on the thumbnail with bold, eye-catching typography.`;
+            }
+            
+            // Add image editing instructions if images are uploaded
+            if (uploadedImages.length > 0) {
+                detailedPrompt += `\n\nUse the following uploaded images in the thumbnail:`;
+                uploadedImages.forEach((image, index) => {
+                    const contextText = image.context ? ` (Context: ${image.context})` : '';
+                    detailedPrompt += `\n- Image ${index + 1}: ${image.name}${contextText}`;
+                });
+                detailedPrompt += `\n\nCombine and enhance these images to create an engaging thumbnail.`;
+            }
+
+            try {
+                // API configuration
+                const apiKey = "AIzaSyAmglIzVJjpZmys2lusJ0ZNtgvgSUZyDYk";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+
+                // Prepare the payload
+                let payload = {
+                    contents: [{
+                        parts: [{ text: detailedPrompt }]
+                    }],
+                    generationConfig: {
+                        responseModalities: ['IMAGE']
+                    },
+                };
+
+                // If images are uploaded, include them in the request
+                if (uploadedImages.length > 0) {
+                    uploadedImages.forEach(image => {
+                        // Convert data URL to base64
+                        const base64Data = image.data.split(',')[1];
+                        const mimeType = image.data.split(',')[0].split(':')[1].split(';')[0];
+                        
+                        payload.contents[0].parts.push({
+                            inlineData: {
+                                mimeType: mimeType,
+                                data: base64Data
+                            }
+                        });
+                    });
+                }
+
+                let response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorBody = await response.text();
+                    console.error('API Error Details:', errorBody);
+                    
+                    // Check for specific billing errors
+                    if (response.status === 403) {
+                        throw new Error('Billing not enabled. Please enable billing for your Google Cloud project to use the Gemini API.');
+                    } else if (response.status === 400) {
+                        throw new Error('Invalid request. Please check your API key and try again.');
+                    } else {
+                        throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorBody}`);
+                    }
+                }
+                
+                const result = await response.json();
+                console.log('API Response:', result);
+
+                const base64Data = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+
+                if (base64Data) {
+                    thumbnailImage.src = `data:image/png;base64,${base64Data}`;
+                    
+                    // Update rate limiting
+                    lastGenerationTime = Date.now();
+                    generationCount++;
+                    
+                    // Deduct credit (unless unlimited plan)
+                    if (userPlan !== 'unlimited') {
+                        userCredits--;
+                        localStorage.setItem('nailedit_credits', userCredits);
+                        updateCreditDisplay();
+                    }
+                    
+                    showSuccess();
+                } else {
+                    console.error("Response structure invalid or missing image data:", result);
+                    throw new Error("Couldn't find image data in the AI response.");
+                }
+
+            } catch (error) {
+                console.error('Error generating thumbnail:', error);
+                showError(error.message || 'Failed to generate thumbnail. Please try again.');
+            }
+        }
+
+        // UI Helper Functions
+        function showLoading(isLoading) {
+            if (isLoading) {
+                loader.classList.remove('hidden');
+                thumbnailImage.classList.add('hidden');
+                errorMessage.classList.add('hidden');
+                placeholder.classList.add('hidden');
+                downloadSection.classList.add('hidden');
+                btnText.classList.add('hidden');
+                btnLoader.classList.remove('hidden');
+                generateBtn.disabled = true;
+            } else {
+                loader.classList.add('hidden');
+                btnText.classList.remove('hidden');
+                btnLoader.classList.add('hidden');
+                generateBtn.disabled = false;
+            }
+        }
+
+        function showSuccess() {
+            showLoading(false);
+            thumbnailImage.classList.remove('hidden');
+            downloadSection.classList.remove('hidden');
+            
+            // Set up download functionality
+            downloadBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `nailedit-thumbnail-${Date.now()}.png`;
+                link.href = thumbnailImage.src;
+                link.click();
+            };
+        }
+
+        function showError(message) {
+            showLoading(false);
+            errorMessage.classList.remove('hidden');
+            errorMessage.querySelector('p').textContent = message;
+        }
+
+        // Fetch with Exponential Backoff
+        async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok || response.status < 500) {
+                        return response;
+                    }
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                }
+                await new Promise(res => setTimeout(res, delay * Math.pow(2, i)));
+            }
+            throw new Error('Max retries reached');
+        }
+
+        // Add some interactive feedback
+        promptInput.addEventListener('focus', () => {
+            promptInput.classList.add('ring-2', 'ring-red-200');
+        });
+
+        promptInput.addEventListener('blur', () => {
+            promptInput.classList.remove('ring-2', 'ring-red-200');
+        });
+    </script>
+</body>
+</html>

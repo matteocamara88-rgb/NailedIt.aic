@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - NailedIt.ai</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+        }
+        .thumbs-up {
+            width: 32px;
+            height: 32px;
+            background-color: #dc2626;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+        }
+        .thumbs-up::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 16px;
+            background-color: white;
+            border-radius: 6px 6px 4px 4px;
+        }
+        .thumbs-up::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 10px;
+            background-color: white;
+            border-radius: 2px;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body class="text-gray-200 min-h-screen">
+    <div class="container mx-auto px-6 py-12 max-w-4xl">
+        <!-- Header -->
+        <header class="py-6 text-center flex justify-center items-center gap-3 mb-8">
+            <div class="thumbs-up"></div>
+            <h1 class="text-3xl font-bold text-white">NailedIt.ai</h1>
+        </header>
+
+        <!-- Content -->
+        <div class="bg-gray-800 rounded-2xl p-8">
+            <h1 class="text-4xl font-bold text-white mb-8">Privacy Policy</h1>
+            <p class="text-gray-400 mb-6">Last updated: January 2025</p>
+
+            <div class="space-y-8">
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">Information We Collect</h2>
+                    <div class="text-gray-300 space-y-4">
+                        <p>We collect minimal information to provide our AI thumbnail generation service:</p>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>Video descriptions and prompts you provide</li>
+                            <li>Images you upload for thumbnail generation</li>
+                            <li>Text overlays you specify</li>
+                            <li>Payment information (processed securely by PayPal/Stripe)</li>
+                            <li>Usage data (number of credits, generation history)</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">How We Use Your Information</h2>
+                    <div class="text-gray-300 space-y-4">
+                        <p>We use your information solely to:</p>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>Generate AI thumbnails based on your specifications</li>
+                            <li>Process payments and manage your account</li>
+                            <li>Track your credit usage and plan status</li>
+                            <li>Improve our AI models and service quality</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">Data Storage and Security</h2>
+                    <div class="text-gray-300 space-y-4">
+                        <p>Your data is stored securely and we implement appropriate security measures:</p>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>All data is stored locally in your browser (localStorage)</li>
+                            <li>No personal data is stored on our servers</li>
+                            <li>Payment processing is handled by secure third-party providers</li>
+                            <li>We use HTTPS encryption for all data transmission</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">Third-Party Services</h2>
+                    <div class="text-gray-300 space-y-4">
+                        <p>We use the following third-party services:</p>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li><strong>Google Gemini AI:</strong> For thumbnail generation</li>
+                            <li><strong>PayPal:</strong> For payment processing</li>
+                            <li><strong>Stripe:</strong> For payment processing</li>
+                        </ul>
+                        <p>These services have their own privacy policies and data handling practices.</p>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">Your Rights</h2>
+                    <div class="text-gray-300 space-y-4">
+                        <p>You have the right to:</p>
+                        <ul class="list-disc list-inside space-y-2 ml-4">
+                            <li>Access your data (stored locally in your browser)</li>
+                            <li>Delete your data (clear your browser's localStorage)</li>
+                            <li>Withdraw consent for data processing</li>
+                            <li>Request information about data processing</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-semibold text-white mb-4">Contact Us</h2>
+                    <div class="text-gray-300">
+                        <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+                        <p class="mt-2">
+                            <strong>Email:</strong> <a href="mailto:privacy@nailedit.ai" class="text-red-400 hover:text-red-300">privacy@nailedit.ai</a>
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Back Button -->
+            <div class="mt-12 text-center">
+                <a href="index.html" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                    Back to App
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

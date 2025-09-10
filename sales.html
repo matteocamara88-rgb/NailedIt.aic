@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NailedIt.ai - Create Viral YouTube Thumbnails in Seconds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://www.paypal.com/sdk/js?client-id=AQp8NxU5-Y_ireWCdgxhpb-wLZeD5Ne7RGAHjdXHlkpq42Sayrc3Awg6QQdM_Tlfh5We3B6HMP4ckCjN&currency=USD"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #f87171, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .cta-button {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            background-size: 200% 100%;
+            transition: background-position 0.5s ease;
+        }
+        .cta-button:hover {
+            background-position: 100% 0;
+        }
+        .feature-card {
+            background: rgba(31, 41, 55, 0.5);
+            border: 1px solid rgba(55, 65, 81, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .pricing-card {
+            background: #1f2937;
+            border: 1px solid #374151;
+        }
+        .pro-plan {
+            border-color: #ef4444;
+            transform: scale(1.05);
+        }
+        .thumbs-up {
+            width: 32px;
+            height: 32px;
+            background-color: #dc2626;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+        }
+        .thumbs-up::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 16px;
+            background-color: white;
+            border-radius: 6px 6px 4px 4px;
+        }
+        .thumbs-up::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 10px;
+            background-color: white;
+            border-radius: 2px;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+
+    <!-- Header -->
+    <header class="py-6 text-center flex justify-center items-center gap-3">
+        <div class="thumbs-up"></div>
+        <h2 class="text-3xl font-bold text-white">NailedIt.ai</h2>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="container mx-auto px-6 py-16 md:py-24 text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+            Never Guess Again. <br/> Just <span class="gradient-text">Get More Clicks.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+            Instantly generate scroll-stopping YouTube thumbnails from a single line of text. Our AI is trained on viral designs to create visuals that demand attention.
+        </p>
+        <a href="#pricing" class="cta-button text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg transform hover:scale-105 transition-transform duration-300">
+            Start Creating Now
+        </a>
+        <div class="mt-12">
+            <h3 class="text-2xl font-bold text-white text-center mb-8">AI-Generated Thumbnails That Get Clicks</h3>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="relative group">
+                    <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="MrBeast Ice Challenge Thumbnail" class="w-full rounded-2xl shadow-2xl border-2 border-gray-700 transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <p class="text-sm font-semibold">Ice Challenge Series</p>
+                        <p class="text-xs text-gray-300">1M+ views</p>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <img src="https://i.ytimg.com/vi/9bZkp7q19f0/maxresdefault.jpg" alt="Minecraft 100 Days Thumbnail" class="w-full rounded-2xl shadow-2xl border-2 border-gray-700 transform group-hover:scale-105 transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
+                    <div class="absolute bottom-4 left-4 text-white">
+                        <p class="text-sm font-semibold">Minecraft 100 Days</p>
+                        <p class="text-xs text-gray-300">500K+ views</p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-gray-400 mt-6 text-sm">Generated with NailedIt.ai - Real results from real creators</p>
+        </div>
+    </main>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-900 bg-opacity-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Why Top Creators Choose NailedIt.ai</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card p-8 rounded-2xl text-center">
+                    <div class="text-5xl mb-4 gradient-text">🎨</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Infinite Styles</h3>
+                    <p class="text-gray-400">Generate thumbnails in any style you can imagine. From photorealistic to cartoon to cinematic, find the perfect look for your brand.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="feature-card p-8 rounded-2xl text-center">
+                    <div class="text-5xl mb-4 gradient-text">⚡️</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Create in Seconds</h3>
+                    <p class="text-gray-400">Don't waste hours in design software. Go from idea to a finished, high-resolution thumbnail in under 30 seconds.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="feature-card p-8 rounded-2xl text-center">
+                    <div class="text-5xl mb-4 gradient-text">📈</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Engineered for Clicks</h3>
+                    <p class="text-gray-400">Our AI understands what makes people click. It generates eye-catching visuals with bold colors and clear subjects to maximize your CTR.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-4">Find the Perfect Plan for You</h2>
+            <p class="text-center text-gray-400 mb-12">Choose the plan that fits your creative workflow. One-time payment, lifetime access.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                
+                <!-- Basic Plan -->
+                <div class="pricing-card p-8 rounded-2xl flex flex-col transition-transform duration-300">
+                    <h3 class="text-2xl font-bold text-white text-center">Basic</h3>
+                    <div class="text-center my-6">
+                        <span class="text-5xl font-extrabold text-white">$9.99</span>
+                        <span class="text-gray-400">one-time</span>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> 50 AI Thumbnails</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Standard AI Styles</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> YouTube Aspect Ratio</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Multiple Image Upload</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Text Overlay</li>
+                    </ul>
+                    <div class="space-y-3">
+                        <div id="stripe-button-basic" class="w-full min-h-[50px] flex items-center justify-center">
+                            <div class="text-gray-400 text-sm">Loading Stripe...</div>
+                        </div>
+                        <div class="text-center text-gray-400 text-sm">or</div>
+                        <div id="paypal-button-basic" class="w-full min-h-[50px] flex items-center justify-center">
+                            <div class="text-gray-400 text-sm">Loading PayPal...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Plan (Most Popular) -->
+                <div class="pricing-card pro-plan relative p-8 rounded-2xl flex flex-col shadow-2xl">
+                    <div class="absolute top-0 -translate-y-1/2 w-full flex justify-center">
+                        <span class="bg-red-500 text-white text-sm font-bold px-4 py-1 rounded-full">MOST POPULAR</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white text-center">Pro</h3>
+                    <div class="text-center my-6">
+                        <span class="text-5xl font-extrabold text-white">$24.99</span>
+                        <span class="text-gray-400">one-time</span>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> 200 AI Thumbnails</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> All Premium AI Styles</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Multiple Aspect Ratios</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Priority Processing</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Advanced Text Options</li>
+                    </ul>
+                    <div class="space-y-3">
+                        <div id="stripe-button-pro" class="w-full min-h-[50px] flex items-center justify-center">
+                            <div class="text-gray-400 text-sm">Loading Stripe...</div>
+                        </div>
+                        <div class="text-center text-gray-400 text-sm">or</div>
+                        <div id="paypal-button-pro" class="w-full min-h-[50px] flex items-center justify-center">
+                            <div class="text-gray-400 text-sm">Loading PayPal...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unlimited Plan -->
+                <div class="pricing-card p-8 rounded-2xl flex flex-col transition-transform duration-300">
+                    <h3 class="text-2xl font-bold text-white text-center">Unlimited</h3>
+                    <div class="text-center my-6">
+                        <span class="text-5xl font-extrabold text-white">$44.99</span>
+                        <span class="text-gray-400">one-time</span>
+                    </div>
+                    <ul class="space-y-4 text-gray-300 mb-8 flex-grow">
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Unlimited AI Thumbnails</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> All Premium AI Styles</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Multiple Aspect Ratios</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Priority Processing</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-3">✔</span> Commercial License</li>
+                    </ul>
+                    <div class="space-y-3">
+                        <div id="stripe-button-unlimited" class="w-full min-h-[50px] flex items-center justify-center">
+                            <div class="text-gray-400 text-sm">Loading Stripe...</div>
+                        </div>
+                        <div class="text-center text-gray-400 text-sm">or</div>
+                        <div id="paypal-button-unlimited" class="w-full min-h-[50px] flex items-center justify-center">
+                            <div class="text-gray-400 text-sm">Loading PayPal...</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <p class="text-center text-xs text-gray-500 mt-8">All payments are securely processed by Stripe and PayPal. 30-Day Money-Back Guarantee.</p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="text-center py-8 border-t border-gray-800">
+        <p class="text-gray-500">&copy; 2025 NailedIt.ai. All Rights Reserved.</p>
+        <div class="mt-2">
+            <a href="privacy.html" class="text-gray-500 hover:text-white mx-2">Privacy Policy</a>
+            <a href="terms.html" class="text-gray-500 hover:text-white mx-2">Terms of Service</a>
+            <a href="mailto:support@nailedit.ai" class="text-gray-500 hover:text-white mx-2">Contact Support</a>
+        </div>
+    </footer>
+
+    <script>
+        // Stripe Price IDs - LIVE AND READY! 
+        const priceIds = {
+            basic: 'price_1S5pKR09P05WtVy3Xf4wBmNp',     // Basic Plan: $9.99 one-time
+            pro: 'price_1S5pNA09P05WtVy3dznMX0Ea',         // Pro Plan: $24.99 one-time  
+            unlimited: 'price_1S5pOa09P05WtVy3fkHjxOHq'   // Unlimited Plan: $44.99 one-time
+        };
+        
+        const stripe = Stripe('pk_live_51Rvvfk09P05WtVy3uCW57DEbeF4eQ7kyW3AjqVJEyNjKIMlq9OXmhLxZIF1xyTI5SMfEXwsPWbVSs5pMaXAhWjwq00GexjS3q9'); // Your Stripe Publishable Key
+
+        // Create Stripe buttons dynamically
+        function createStripeButton(plan, price) {
+            const button = document.createElement('button');
+            button.className = 'w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200';
+            button.textContent = `Pay with Card - $${price}`;
+            button.dataset.plan = plan;
+            button.dataset.priceId = priceIds[plan];
+            
+            button.addEventListener('click', async (event) => {
+                const plan = event.target.dataset.plan;
+                const priceId = priceIds[plan];
+
+                if (!priceId || priceId.includes('...')) {
+                    alert('Stripe Price ID is not configured. Please contact support.');
+                    return;
+                }
+
+                event.target.textContent = 'Redirecting to checkout...';
+                event.target.disabled = true;
+
+                try {
+                    // Call our secure serverless function
+                    const response = await fetch('/api/create-stripe-session', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ plan, priceId }),
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Server Response:', response.status, errorText);
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    console.log('Stripe session created:', result);
+                    
+                    // Redirect to Stripe's hosted checkout page
+                    const { error } = await stripe.redirectToCheckout({ sessionId: result.id });
+
+                    if (error) {
+                        console.error('Stripe redirect error:', error);
+                        alert('Payment redirect failed: ' + error.message);
+                    }
+                } catch (error) {
+                    console.error('Stripe Payment Error:', error);
+                    alert('Could not process Stripe payment. Please try PayPal option below or contact support.');
+                    event.target.textContent = `Pay with Card - $${price}`;
+                    event.target.disabled = false;
+                }
+            });
+
+            return button;
+        }
+
+        // Add Stripe buttons when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Basic Plan
+            const stripeBasic = createStripeButton('basic', '9.99');
+            const basicContainer = document.getElementById('stripe-button-basic');
+            basicContainer.innerHTML = '';
+            basicContainer.appendChild(stripeBasic);
+
+            // Pro Plan
+            const stripePro = createStripeButton('pro', '24.99');
+            const proContainer = document.getElementById('stripe-button-pro');
+            proContainer.innerHTML = '';
+            proContainer.appendChild(stripePro);
+
+            // Unlimited Plan
+            const stripeUnlimited = createStripeButton('unlimited', '44.99');
+            const unlimitedContainer = document.getElementById('stripe-button-unlimited');
+            unlimitedContainer.innerHTML = '';
+            unlimitedContainer.appendChild(stripeUnlimited);
+        });
+
+        // PayPal Integration
+        paypal.Buttons({
+            style: {
+                color: 'red',
+                shape: 'rect',
+                label: 'paypal'
+            },
+            createOrder: function(data, actions) {
+                console.log('Creating PayPal order for Basic plan');
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '9.99',
+                            currency_code: 'USD'
+                        },
+                        description: 'NailedIt.ai Basic Plan - 50 AI Thumbnails'
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                console.log('PayPal order approved:', data);
+                return actions.order.capture().then(function(details) {
+                    console.log('PayPal payment captured:', details);
+                    // Redirect to thank you page
+                    window.location.href = 'thankyou.html?plan=basic&credits=50&order=' + details.id;
+                });
+            },
+            onError: function(err) {
+                console.error('PayPal Error:', err);
+                alert('PayPal payment failed: ' + err.message + '. Please try again.');
+            },
+            onCancel: function(data) {
+                console.log('PayPal payment cancelled:', data);
+                alert('Payment was cancelled. You can try again anytime.');
+            }
+        }).render('#paypal-button-basic');
+
+        paypal.Buttons({
+            style: {
+                color: 'red',
+                shape: 'rect',
+                label: 'paypal'
+            },
+            createOrder: function(data, actions) {
+                console.log('Creating PayPal order for Pro plan');
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '24.99',
+                            currency_code: 'USD'
+                        },
+                        description: 'NailedIt.ai Pro Plan - 200 AI Thumbnails'
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                console.log('PayPal order approved:', data);
+                return actions.order.capture().then(function(details) {
+                    console.log('PayPal payment captured:', details);
+                    // Redirect to thank you page
+                    window.location.href = 'thankyou.html?plan=pro&credits=200&order=' + details.id;
+                });
+            },
+            onError: function(err) {
+                console.error('PayPal Error:', err);
+                alert('PayPal payment failed: ' + err.message + '. Please try again.');
+            },
+            onCancel: function(data) {
+                console.log('PayPal payment cancelled:', data);
+                alert('Payment was cancelled. You can try again anytime.');
+            }
+        }).render('#paypal-button-pro');
+
+        paypal.Buttons({
+            style: {
+                color: 'red',
+                shape: 'rect',
+                label: 'paypal'
+            },
+            createOrder: function(data, actions) {
+                console.log('Creating PayPal order for Unlimited plan');
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '44.99',
+                            currency_code: 'USD'
+                        },
+                        description: 'NailedIt.ai Unlimited Plan - Unlimited AI Thumbnails'
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                console.log('PayPal order approved:', data);
+                return actions.order.capture().then(function(details) {
+                    console.log('PayPal payment captured:', details);
+                    // Redirect to thank you page
+                    window.location.href = 'thankyou.html?plan=unlimited&credits=999999&order=' + details.id;
+                });
+            },
+            onError: function(err) {
+                console.error('PayPal Error:', err);
+                alert('PayPal payment failed: ' + err.message + '. Please try again.');
+            },
+            onCancel: function(data) {
+                console.log('PayPal payment cancelled:', data);
+                alert('Payment was cancelled. You can try again anytime.');
+            }
+        }).render('#paypal-button-unlimited');
+    </script>
+
+</body>
+</html>
